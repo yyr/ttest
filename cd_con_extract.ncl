@@ -31,7 +31,6 @@ begin
 
   time=f1->time
   time2=f2->time
-  ttime = time2
 
   rf=f1->rf
   olr=f2->olr
@@ -41,14 +40,12 @@ begin
 
   ar_avg=wgt_areaave_Wrap(rf(:,0,{15:25},{76:86}), 1., 1., 0)
   indices = ind(ar_avg.le.-10.0 .or. ar_avg.ge.10.0)
-
   t2_indices_qu = get_matched_time_indices(time, time2, indices)
-  t2_vals = time2(t2_indices_qu)
 
   outvar = olr(t2_indices_qu,:,:)
   o->olr = outvar
 
-  do it = 0, 100, 1
-    print("rf: " + ut_calendar(time(indices(it)), -2) + " olr: " + ut_calendar(t2_vals(it), -2))
-  end do
+  ; do it = 0, 100, 1
+  ;   print("rf: " + ut_calendar(time(indices(it)), -2) + " olr: " + ut_calendar(time2(t2_indices_qu(it)), -2))
+  ; end do
 end
