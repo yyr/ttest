@@ -51,13 +51,17 @@ begin
 
   t2_ind = new(dimsizes(t1_extm), integer)
 
-  do ii = 0, dimsizes(t1_extm) - 1, 1    ; doc
-    t2_ind(ii) = ind(t2.eq.t1_extm(ii))
-  end do
+  ; do ii = 0, dimsizes(t1_extm) - 1, 1    ; doc
+  ;   t2_ind(ii) = ind(t2.eq.t1_extm(ii))
+  ; end do
 
-  do it = 0, dimsizes(t1_extm) - 10, 1
-    print("t1_extm: " + t1_extm + " t2: " + ut_calendar(time2(t2_ind(it)), -2))
-  end do
-  exit
+  ; do it = 0, dimsizes(t1_extm) - 10, 1
+  ;   print("t1_extm: " + t1_extm + " t2: " + ut_calendar(time2(t2_ind(it)), -2))
+  ; end do
+  ; exit
 
+  do j = 0, dimsizes(t1_extm)-1, 1
+    if
+  olr2 = olr({where t2.eq.t1_extm},:,:)
+printVarSummary(olr2)
 end
