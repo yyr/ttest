@@ -21,12 +21,14 @@ begin
   f2=addfile("/iitm2/cccr-res/bhupendra/test_analysis/d_olr_jun_74_dec_13.nc","r")
 
   olr_in = short2flt(f1->olr)
-  olr=short2flt(f2->olr)
+  olr_ori=short2flt(f2->olr)
+
+  nofsamples = 10000
+  rans = floattoint(random_uniform(0,dim0(olr_ori),nofsamples))
+  olr = olr_ori(rans,:,:)
 
   xAve = dim_avg_n_Wrap(olr_in, 0)              ; calculate means at each grid point
   yAve = dim_avg_n_Wrap(olr, 0)
-  printMinMax(xAve,0)
-  printMinMax(yAve,0)
 
   xAve = dim_avg_n_Wrap(olr_in, 0)              ; calculate means at each grid point
   yAve = dim_avg_n_Wrap(olr, 0)
