@@ -17,15 +17,24 @@ begin
 end
 
 begin
+  ran = True                   ; if ran=False normal ttest
+                                ; if ran = True random sample ttest
+
   f1=addfile("olr_out.nc","r")
   f2=addfile("/iitm2/cccr-res/bhupendra/test_analysis/d_olr_jun_74_dec_13.nc","r")
 
   olr_in = short2flt(f1->olr)
-  olr_ori=short2flt(f2->olr)
 
-  nofsamples = 10000
-  rans = floattoint(random_uniform(0,dim0(olr_ori),nofsamples))
-  olr = olr_ori(rans,:,:)
+  if ( ran ) then
+    wks = gsn_open_wks("pdf", "ttest_random")
+    olr_ori=short2flt(f2->olr)
+    nofsamples = 10000
+    rans = floattoint(random_uniform(0,dim0(olr_ori),nofsamples))
+    olr = olr_ori(rans,:,:)
+  else
+    olr=short2flt(f2->olr)
+    wks = gsn_open_wks("pdf", "ttest_total")
+  end if
 
   xAve = dim_avg_n_Wrap(olr_in, 0)              ; calculate means at each grid point
   yAve = dim_avg_n_Wrap(olr, 0)
@@ -46,7 +55,7 @@ begin
   prob = ttest(xAve,xVar,dim0(olr_in), yAve,yVar,dim0(olr), iflag, False)
 
   probt = 100.*(1. - prob)
-  xAve = where(probt.lt.95.,xAve@_FillValue, xAve)
+;  xAve = where(probt.lt.95.,xAve@_FillValue, xAve)
 
   res = True
   res@cnFillOn = True
@@ -55,7 +64,6 @@ begin
   res@cnLinesOn = False
   res@cnLineLabelsOn = False
 
-  wks = gsn_open_wks("pdf", "ttest")
   gsn_define_colormap(wks,"MPL_RdPu") ;
 
   printMinMax(xAve, True)
